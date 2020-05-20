@@ -1,0 +1,138 @@
+{% extends "layout.html" %}
+
+{% block import %}
+    <!--JQuery import statement from https://www.w3schools.com/jquery/jquery_get_started.asp-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Add icon library https://www.w3schools.com/howto/howto_css_icon_buttons.asp-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+
+{% block title %}
+    My Cookbook
+{% endblock %}
+
+{% block main %}
+    <h2>My Cookbook</h2>
+
+    <form id="submit" action="/delete2" method="post">
+        <!--empty text field to remove item-->
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="recipe_id" id="recipe_id" placeholder="Delete a recipe" type="text">
+        </div>
+    </form>
+
+    <!--Table to display recipes-->
+    <table class="table table-striped">
+        <thread>
+            <tr class="bg-warning text-white">
+                <th>Name</th>
+                <th>Rating</th>
+                <th>Difficulty</th>
+                <th style="width: 150px;">Type</th>
+                <th style="width: 105px;">Prep Time (minutes)</th>
+                <th>Main Ingredients</th>
+                <th style="width: 115px;">Last Made</th>
+                <th>Full Recipe</th>
+                <th>Delete</th>
+            </tr>
+        </thread>
+        <tbody>
+            {% for k in range( length ) %}
+            <tr class="rows">
+                <!--Recipe name-->
+                <td>{{ rows[k]["name"] }}</td>
+
+                <!--rating-->
+                <!--star emoji from https://www.htmlsymbols.xyz/star-symbols-->
+                {% if rows[k]["rating"] == 1 %}
+                    <td>&#11088;</td>
+                {% elif rows[k]["rating"] == 2 %}
+                    <td>&#11088;&#11088;</td>
+                {% elif rows[k]["rating"] == 3 %}
+                    <td>&#11088;&#11088;&#11088;</td>
+                {% elif rows[k]["rating"] == 4 %}
+                    <td>&#11088;&#11088;&#11088;&#11088;</td>
+                {% elif rows[k]["rating"] == 5 %}
+                    <td>&#11088;&#11088;&#11088;&#11088;&#11088;</td>
+                {% else %}
+                    <td> </td>
+                {% endif %}
+
+                <!--difficulty-->
+                {% if rows[k]["difficulty"] == 'Easy' %}
+                    <td class="easy">{{ rows[k]["difficulty"] }}</td>
+                {% elif rows[k]["difficulty"] == 'Medium' %}
+                    <td class="medium">{{ rows[k]["difficulty"] }}</td>
+                {% elif rows[k]["difficulty"] == 'Hard' %}
+                    <td class="hard">{{ rows[k]["difficulty"] }}</td>
+                {% else %}
+                    <td> </td>
+                {% endif %}
+
+                <!--meal type-->
+                <td>{{ rows[k]["mealtype"] }}</td>
+
+                <!--prep time-->
+                <td>{{ rows[k]["preptime"] }}</td>
+
+                <!--ingredients-->
+                <td>
+                    <!--https://getbootstrap.com/docs/4.4/components/collapse/-->
+                    <!--collapsable a tags from https://mdbootstrap.com/docs/jquery/javascript/collapse/-->
+                    <a class="btn btn-primary btn-sm btn-secondary" data-toggle="collapse" href="#collapseExample{{ rows[k]["id"] }}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        View
+                    </a>
+                    <div class="collapse" id="collapseExample{{ rows[k]["id"] }}">
+                        <div class="card card-body">
+                            {% if rows[k]["i1"] is not none %}
+                                {{ rows[k]["i1"] }}
+                                <br>
+                            {% endif %}
+                            {% if rows[k]["i2"] is not none %}
+                                {{ rows[k]["i2"] }}
+                                <br>
+                            {% endif %}
+                            {% if rows[k]["i3"] is not none %}
+                                {{ rows[k]["i3"] }}
+                                <br>
+                            {% endif %}
+                            {% if rows[k]["i4"] is not none %}
+                                {{ rows[k]["i4"] }}
+                                <br>
+                            {% endif %}
+                            {% if rows[k]["i5"] is not none %}
+                                {{ rows[k]["i5"] }}
+                                <br>
+                            {% endif %}
+                        </div>
+                    </div>
+                </td>
+
+                <!--date last made-->
+                <td>{{ rows[k]["lastmade"] }}</td>
+
+                <!--url to full recipe-->
+                <td><a href={{ rows[k]["url"] }}>View</a></td>
+                <td>
+                    <!--icon button from https://www.w3schools.com/howto/howto_css_icon_buttons.asp-->
+                    <button id="delete2" class="btn" onclick="del2({{ rows[k]["id"] }})"><i class="fa fa-trash"></i></button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function del2(id)
+        {
+            // get id of item user wants to delete
+            // https://stackoverflow.com/questions/4683331/how-to-fill-in-form-field-and-submit-using-javascript
+            document.getElementById("recipe_id").value = id;
+
+            // send id to empty text field & submit
+            // https://api.jquery.com/submit/
+            $("#submit").submit();
+        }
+    </script>
+{% endblock %}

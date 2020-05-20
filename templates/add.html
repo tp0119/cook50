@@ -1,0 +1,113 @@
+{% extends "layout.html" %}
+
+{% block import %}
+    <!--JQuery import statement from https://www.w3schools.com/jquery/jquery_get_started.asp-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+{% endblock %}
+
+{% block title %}
+    Add
+{% endblock %}
+
+{% block main %}
+    <h2>Add a new recipe</h2>
+
+    <br>
+    <br>
+
+    <form action="/add" method="post">
+        <!--div class "row" and "col" from https://getbootstrap.com/docs/4.0/layout/grid/-->
+        <div class="row">
+            <div class="col"></div>
+            <div class="col">
+                <!--Name-->
+                <div class="form-group">
+                    <input autocomplete="off" autofocus class="form-control" id="name" name="name" placeholder="Recipe Name*" type="text" onkeyup="disable()">
+                </div>
+                <!--Rating-->
+                <div class="form-group">
+                    <input class="form-control" style="width: 85px;" name="rating" min="0" max="5" placeholder="Rating" type="number">
+                </div>
+                <!--Difficulty-->
+                <div class="form-group">
+                    <select class="form-control" name="difficulty" style="width: 150px">
+                        <option disabled selected value="">Difficulty</option>
+                            <option value="Easy">Easy</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Hard">Hard</option>
+                    </select>
+                </div>
+                <!--Type-->
+                <div class="form-group">
+                    <select class="form-control" id="type" name="type" onchange="disable()">
+                        <option disabled selected value="">Type*</option>
+                            <option value="Breakfast">Breakfast</option>
+                            <option value="Lunch">Lunch</option>
+                            <option value="Appetizer">Appetizer</option>
+                            <option value="Dinner Entrée">Dinner Entrée</option>
+                            <option value="Dinner Side Dish">Dinner Side Dish</option>
+                            <option value="Dessert">Dessert</option>
+                            <option value="Snack">Snack</option>
+                            <option value="Hors d'Oeuvres">Hors d'Oeuvres</option>
+                            <option value="Beverage">Beverage</option>
+                    </select>
+                </div>
+                <!--Prep Time-->
+                <div class="form-group">
+                    <input class="form-control" min="0" name="preptime" placeholder="Prep Time (in minutes)" type="number">
+                </div>
+                <!--Last Made-->
+                <div class="form-group">
+                    <input class="form-control" name="lastmade" placeholder="Last Made" type="date">
+                </div>
+                <!--Link to full recipe-->
+                <div class="form-group">
+                    <input class="form-control" name="url" placeholder="Recipe URL" type="text">
+                </div>
+            </div>
+
+            <!--Ingredients-->
+            <div class="col">
+                <div class="form-group">
+                    <input autocomplete="off" autofocus class="form-control" name="i1" placeholder="Main Ingredient 1" type="text">
+                </div>
+                <div class="form-group">
+                    <input autocomplete="off" autofocus class="form-control" name="i2" placeholder="Main Ingredient 2" type="text">
+                </div>
+                <div class="form-group">
+                    <input autocomplete="off" autofocus class="form-control" name="i3" placeholder="Main Ingredient 3" type="text">
+                </div>
+                <div class="form-group">
+                    <input autocomplete="off" autofocus class="form-control" name="i4" placeholder="Main Ingredient 4" type="text">
+                </div>
+                <div class="form-group">
+                    <input autocomplete="off" autofocus class="form-control" name="i5" placeholder="Main Ingredient 5" type="text">
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+
+        <br>
+
+        <button class="btn btn-primary" type="submit" id="submit" disabled>Add</button>
+    </form>
+
+    <script>
+        // if name or meal type not entered, gray out "Add" button
+        // design adapted from CS50 Flask video in Web track
+        function disable() {
+            if (document.querySelector("#name").value === "" || document.querySelector("#type").value === "")
+            {
+                document.querySelector("#submit").disabled = true;
+            } else {
+                document.querySelector("#submit").disabled = false;
+            }
+        }
+    </script>
+{% endblock %}
+
+{% block footer %}
+    <footer class="small text-center text-muted">
+        Fields with * are required
+    </footer>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "layout.html" %}
+
+{% block import %}
+    <!--JQuery import statement from https://www.w3schools.com/jquery/jquery_get_started.asp-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Add icon library https://www.w3schools.com/howto/howto_css_icon_buttons.asp-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+
+{% block title %}
+    Shopping List
+{% endblock %}
+
+{% block main %}
+    <h2>My Shopping List</h2>
+    <br>
+
+    <form action="/shoppinglist" method="post">
+        <!--Add new item to list-->
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" id="item" name="item" placeholder="Add a new item*" type="text" onkeyup="disable()">
+            <input autocomplete="off" autofocus class="form-control" min="0" name="quantity" placeholder="Quantity" type="number">
+            <button class="btn btn-primary" id="btn" type="submit" disabled>Add</button>
+        </div>
+    </form>
+
+    <form id="submit" action="/remove" method="post">
+        <!--empty text field to remove item-->
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="item_id" id="item_id" placeholder="Remove an item" type="text">
+        </div>
+    </form>
+
+    <!--display shopping list with item names, quantities, checkboxes for when item is acquired by user, and remove button-->
+    <table class="table table-striped">
+        <thread>
+            <tr class="bg-warning text-white">
+                <th>Items</th>
+                <th>Quantity</th>
+                <!--Check mark from https://fontawesome.com/v4.7.0/icon/check-->
+                <th><i class="fa fa-check" aria-hidden="true" style="color: white;"></i></th>
+                <th></th>
+            </tr>
+        </thread>
+        <tbody>
+            {% for k in range( length ) %}
+                <tr>
+                    <td>{{ rows[k]["item"] }}</td>
+                    <td>{{ rows[k]["quantity"] }}</td>
+                    <td>
+                        <!-- Checkboxes from https://mdbootstrap.com/docs/jquery/tables/additional/-->
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="customCheck{{ rows[k]["id"] }}" unchecked>
+                            <label class="custom-control-label" for="customCheck{{ rows[k]["id"] }}"></label>
+                        </div>
+                    </td>
+                    <td>
+                        <!--icon button from https://www.w3schools.com/howto/howto_css_icon_buttons.asp-->
+                        <button id="remove" class="btn" onclick="remove({{ rows[k]["id"] }})"><i class="fa fa-trash"></i></button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        // gets id of item user wants to delete, sends it to empty text field, and deletes item
+        function remove(id)
+        {
+            // https://stackoverflow.com/questions/4683331/how-to-fill-in-form-field-and-submit-using-javascript
+            document.getElementById("item_id").value = id;
+            // https://api.jquery.com/submit/
+            $("#submit").submit();
+        }
+
+        function disable()
+        {
+            if (document.querySelector("#item").value === "") {
+                document.querySelector("#btn").disabled = true;
+            } else {
+                document.querySelector("#btn").disabled = false;
+            }
+        }
+    </script>
+{% endblock %}
+
+{% block footer %}
+    <footer class="small text-center text-muted">
+        Fields with * are required
+    </footer>
+{% endblock %}

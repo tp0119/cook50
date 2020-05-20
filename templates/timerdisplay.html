@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Timer
+{% endblock %}
+
+{% block main %}
+    <!--html and JS code implementing and displaying timer is from https://stackoverflow.com/questions/20618355/the-simplest-possible-javascript-countdown-timer-->
+    <body>
+        <div>
+            <h2 style="vertical-align: center;">Timer ends in <span id="time">{{ minutes }}:00</span></h2>
+        </div>
+    </body>
+
+    <script>
+        function startTimer(duration, display)
+        {
+            var timer = duration, minutes, seconds;
+            var x = setInterval(function () {
+                minutes = parseInt(timer / 60, 10)
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    timer = duration;
+                }
+            }, 1000);
+        }
+
+        // following function from https://www.w3schools.com/jsref/met_win_clearinterval.asp
+        function myStopFunction() {
+            clearInterval(x);
+        }
+
+        window.onload = function ()
+        {
+            // code to use jinja variable in JS from https://stackoverflow.com/questions/21626048/unable-to-pass-jinja2-variables-into-javascript-snippet
+            var Minutes = {{ minutes|tojson }} * 60,
+                display = document.querySelector('#time');
+            startTimer(Minutes, display);
+        };
+    </script>
+{% endblock %}

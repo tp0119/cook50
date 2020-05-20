@@ -1,0 +1,248 @@
+{% extends "layout.html" %}
+
+{% block import %}
+    <!--JQuery import statement from https://www.w3schools.com/jquery/jquery_get_started.asp-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Add icon library https://www.w3schools.com/howto/howto_css_icon_buttons.asp-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+
+{% block title %}
+    Meal Planner
+{% endblock %}
+
+{% block main %}
+    <h2>Meal Planner</h2>
+    <br>
+
+    <form action="/planner" method="post">
+        <!--Add recipe to a specific day-->
+        <div class="form-group">
+
+            <!--select day-->
+            <select class="form-control" name="day">
+                <option disabled selected value="">Day</option>
+                <option value="sun">Sunday</option>
+                <option value="mon">Monday</option>
+                <option value="tue">Tuesday</option>
+                <option value="wed">Wednesday</option>
+                <option value="thu">Thursday</option>
+                <option value="fri">Friday</option>
+                <option value="sat">Saturday</option>
+            </select>
+
+            <!--select meal type-->
+            <select class="form-control" name="type">
+                <option disabled selected value="">Meal Type</option>
+                <option value="Breakfast">Breakfast</option>
+                <option value="Lunch">Lunch</option>
+                <option value="Dinner">Dinner</option>
+            </select>
+
+            <!--select recipe-->
+            <select class="form-control" name="recipe">
+                <option disabled selected value="">Recipe</option>
+                    {% for k in range( length ) %}
+                        <option value="{{ recipes[k]["name"] }}">{{ recipes[k]["name"] }}</option>
+                    {% endfor %}
+            </select>
+
+            <button class="btn btn-primary" type="submit">Add</button>
+        </div>
+    </form>
+
+    <br>
+
+    <form id="submit" action="/delete" method="post">
+        <!--empty text field to delete item-->
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="item_id" id="item_id" placeholder="Delete a recipe from a day" type="text">
+        </div>
+    </form>
+
+    <!--Sunday-->
+    <h3>Sunday</h3>
+    <table class="table table-striped">
+        <thread>
+            <tr class="bg-secondary text-white">
+                <th>Meal Type</th>
+                <th>Recipe</th>
+                <th></th>
+            </tr>
+        </thread>
+        <tbody>
+                {% for i in range(sun_length) %}
+                    <tr>
+                        <!--for each table corresponding to each day, display meal type, recipe name, and delete button-->
+                        <td>{{ sun[i]["mealtype"] }}</td>
+                        <td>{{ sun[i]["name"] }}</td>
+                        <!--icon button from https://www.w3schools.com/howto/howto_css_icon_buttons.asp-->
+                        <td><button id="delete" class="btn" onclick="del({{ sun[i]["id"] }})"><i class="fa fa-trash"></i></button></td>
+                    </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <br>
+
+    <!--Monday-->
+    <h3>Monday</h3>
+    <table class="table table-striped">
+        <thread>
+            <tr class="bg-primary text-white">
+                <th>Meal Type</th>
+                <th>Recipe</th>
+                <th></th>
+            </tr>
+        </thread>
+        <tbody>
+                {% for i in range(mon_length) %}
+                    <tr>
+                        <td>{{ mon[i]["mealtype"] }}</td>
+                        <td>{{ mon[i]["name"] }}</td>
+                        <!--icon button from https://www.w3schools.com/howto/howto_css_icon_buttons.asp-->
+                        <td><button id="delete" class="btn" onclick="del({{ mon[i]["id"] }})"><i class="fa fa-trash"></i></button></td>
+                    </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <br>
+
+    <!--Tuesday-->
+    <h3>Tuesday</h3>
+    <table class="table table-striped">
+        <thread>
+            <tr class="bg-success text-white">
+                <th>Meal Type</th>
+                <th>Recipe</th>
+                <th></th>
+            </tr>
+        </thread>
+        <tbody>
+                {% for i in range(tue_length) %}
+                    <tr>
+                        <td>{{ tue[i]["mealtype"] }}</td>
+                        <td>{{ tue[i]["name"] }}</td>
+                        <!--icon button from https://www.w3schools.com/howto/howto_css_icon_buttons.asp-->
+                        <td><button id="delete" class="btn" onclick="del({{ tue[i]["id"] }})"><i class="fa fa-trash"></i></button></td>
+                    </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <br>
+
+    <!--Wednesday-->
+    <h3>Wednesday</h3>
+    <table class="table table-striped">
+        <thread>
+            <tr class="bg-info text-white">
+                <th>Meal Type</th>
+                <th>Recipe</th>
+                <th></th>
+            </tr>
+        </thread>
+        <tbody>
+                {% for i in range(wed_length) %}
+                    <tr>
+                        <td>{{ wed[i]["mealtype"] }}</td>
+                        <td>{{ wed[i]["name"] }}</td>
+                        <!--icon button from https://www.w3schools.com/howto/howto_css_icon_buttons.asp-->
+                        <td><button id="delete" class="btn" onclick="del({{ wed[i]["id"] }})"><i class="fa fa-trash"></i></button></td>
+                    </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <br>
+
+    <!--Thursday-->
+    <h3>Thursday</h3>
+    <table class="table table-striped">
+        <thread>
+            <tr class="bg-warning text-white">
+                <th>Meal Type</th>
+                <th>Recipe</th>
+                <th></th>
+            </tr>
+        </thread>
+        <tbody>
+                {% for i in range(thu_length) %}
+                    <tr>
+                        <td>{{ thu[i]["mealtype"] }}</td>
+                        <td>{{ thu[i]["name"] }}</td>
+                        <!--icon button from https://www.w3schools.com/howto/howto_css_icon_buttons.asp-->
+                        <td><button id="delete" class="btn" onclick="del({{ thu[i]["id"] }})"><i class="fa fa-trash"></i></button></td>
+                    </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <br>
+
+    <!--Friday-->
+    <h3>Friday</h3>
+    <table class="table table-striped">
+        <thread>
+            <tr class="bg-danger text-white">
+                <th>Meal Type</th>
+                <th>Recipe</th>
+                <th></th>
+            </tr>
+        </thread>
+        <tbody>
+                {% for i in range(fri_length) %}
+                    <tr>
+                        <td>{{ fri[i]["mealtype"] }}</td>
+                        <td>{{ fri[i]["name"] }}</td>
+                        <!--icon button from https://www.w3schools.com/howto/howto_css_icon_buttons.asp-->
+                        <td><button id="delete" class="btn" onclick="del({{ fri[i]["id"] }})"><i class="fa fa-trash"></i></button></td>
+                    </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <br>
+
+    <!--Saturday-->
+    <h3>Saturday</h3>
+    <table class="table table-striped">
+        <thread>
+            <tr class="bg-dark text-white">
+                <th>Meal Type</th>
+                <th>Recipe</th>
+                <th></th>
+            </tr>
+        </thread>
+        <tbody>
+                {% for i in range(sat_length) %}
+                    <tr>
+                        <td>{{ sat[i]["mealtype"] }}</td>
+                        <td>{{ sat[i]["name"] }}</td>
+                        <!--icon button from https://www.w3schools.com/howto/howto_css_icon_buttons.asp-->
+                        <td><button id="delete" class="btn" onclick="del({{ sat[i]["id"] }})"><i class="fa fa-trash"></i></button></td>
+                    </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        // gets id of item user wants to delete, sends it to empty text field, and deletes item
+        function del(id)
+        {
+            document.getElementById("item_id").value = id;
+            $("#submit").submit();
+        }
+    </script>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

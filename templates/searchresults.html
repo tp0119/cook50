@@ -1,0 +1,117 @@
+{% extends "layout.html" %}
+
+{% block import %}
+    <!-- Add icon library https://www.w3schools.com/howto/howto_css_icon_buttons.asp-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+
+{% block title %}
+    Search Results
+{% endblock %}
+
+{% block main %}
+    <h2>Search Results</h2>
+    <br>
+
+    <!--if the recipe searched for does not match any existing recipe in the database, display apology message-->
+    {% if length == 0 %}
+        <h4>Sorry! It looks like the recipe you searched for is not in your cookbook!</h4>
+        <br>
+        <a href="/add">Add it here!</a>
+
+    {% else %}
+
+        <table class="table table-striped">
+            <thread>
+                <tr class="bg-warning text-white">
+                    <th>Name</th>
+                    <th>Rating</th>
+                    <th>Difficulty</th>
+                    <th style="width: 150px;">Type</th>
+                    <th style="width: 105px;">Prep Time (minutes)</th>
+                    <th>Main Ingredients</th>
+                    <th style="width: 115px;">Last Made</th>
+                    <th>Full Recipe</th>
+                </tr>
+            </thread>
+            <tbody>
+                {% for k in range( length ) %}
+                <tr class="rows">
+                    <!--Recipe name-->
+                    <td>{{ rows[k]["name"] }}</td>
+
+                    <!--rating-->
+                    {% if rows[k]["rating"] == 1 %}
+                        <td>&#11088;</td>
+                    {% elif rows[k]["rating"] == 2 %}
+                        <td>&#11088;&#11088;</td>
+                    {% elif rows[k]["rating"] == 3 %}
+                        <td>&#11088;&#11088;&#11088;</td>
+                    {% elif rows[k]["rating"] == 4 %}
+                        <td>&#11088;&#11088;&#11088;&#11088;</td>
+                    {% elif rows[k]["rating"] == 5 %}
+                        <td>&#11088;&#11088;&#11088;&#11088;&#11088;</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+
+                    <!--difficulty-->
+                    {% if rows[k]["difficulty"] == 'Easy' %}
+                        <td class="easy">{{ rows[k]["difficulty"] }}</td>
+                    {% elif rows[k]["difficulty"] == 'Medium' %}
+                        <td class="medium">{{ rows[k]["difficulty"] }}</td>
+                    {% elif rows[k]["difficulty"] == 'Hard' %}
+                        <td class="hard">{{ rows[k]["difficulty"] }}</td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
+
+                    <!--meal type-->
+                    <td>{{ rows[k]["mealtype"] }}</td>
+
+                    <!--prep time-->
+                    <td>{{ rows[k]["preptime"] }}</td>
+
+                    <!--ingredients-->
+                    <td>
+                        <!--https://getbootstrap.com/docs/4.4/components/collapse/-->
+                        <a class="btn btn-primary btn-sm btn-secondary" data-toggle="collapse" href="#collapseExample{{ rows[k]["id"] }}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            View
+                        </a>
+                        <div class="collapse" id="collapseExample{{ rows[k]["id"] }}">
+                            <div class="card card-body">
+                                {% if rows[k]["i1"] is not none %}
+                                    {{ rows[k]["i1"] }}
+                                    <br>
+                                {% endif %}
+                                {% if rows[k]["i2"] is not none %}
+                                    {{ rows[k]["i2"] }}
+                                    <br>
+                                {% endif %}
+                                {% if rows[k]["i3"] is not none %}
+                                    {{ rows[k]["i3"] }}
+                                    <br>
+                                {% endif %}
+                                {% if rows[k]["i4"] is not none %}
+                                    {{ rows[k]["i4"] }}
+                                    <br>
+                                {% endif %}
+                                {% if rows[k]["i5"] is not none %}
+                                    {{ rows[k]["i5"] }}
+                                    <br>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </td>
+
+                    <!--date last made-->
+                    <td>{{ rows[k]["lastmade"] }}</td>
+
+                    <!--url to full recipe-->
+                    <td><a href={{ rows[k]["url"] }}>View</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
