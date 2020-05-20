@@ -1,7 +1,7 @@
 # User's Manual for Cook50
 # by Tulsi Patel
 
-To launch the website from CS50 IDE, execute "cd" followed by "cd finalproject".
+To launch the website from CS50 IDE, execute "cd" followed by "cd cook50".
 Then, enter "flask run" into the command-line, and subsequently click on the link that appears below to open the website.
 
 Once the website is opened, you will be promted to login.
